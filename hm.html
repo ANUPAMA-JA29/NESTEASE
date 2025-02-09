@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestEase - Welcome</title>
+    <style>
+        /* Full page setup */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #A8A2D0, #B9AEDC); /* Light Violet Gradient */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Welcome window with subtle shadow and rounded corners */
+        .welcome-window {
+            background: rgba(255, 255, 255, 0.8); /* Light transparent background */
+            color: #4B0082; /* Darker violet text */
+            text-align: center;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(0);
+            animation: fadeIn 1.8s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        /* FadeIn animation for the window */
+        @keyframes fadeIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Heading style with more space and letter spacing */
+        h1 {
+            font-size: 3.8em;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            animation: textAppear 2s ease-out forwards;
+            text-transform: uppercase;
+        }
+
+        /* Smooth text animation */
+        @keyframes textAppear {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Subheading style */
+        p {
+            font-size: 1.8em;
+            animation: textAppear 2s ease-out 0.5s forwards;
+            letter-spacing: 1.5px;
+        }
+
+       
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            margin-top: 30px;
+        }
+        .nav-links a {
+            font-size: 1.5em;
+            color: #4B0082;
+            text-decoration: none;
+            margin: 10px 20px;
+            padding: 10px 25px;
+            border-radius: 30px;
+            background-color: rgba(186, 153, 228, 0.9); /* Light Violet Button */
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect on links */
+        .nav-links a:hover {
+            background-color: rgba(186, 153, 228, 1);
+            transform: scale(1.1);
+        }
+
+        /* Subtle hover effect on the window */
+        .welcome-window:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* Ensuring mobile responsiveness */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.8em;
+            }
+            p {
+                font-size: 1.5em;
+            }
+            .welcome-window {
+                padding: 40px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="welcome-window">
+        <h1>Welcome to NestEase!</h1>
+        <p>Your Kitchen Assistant. Let's get started!</p>
+        
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href=""www.youtube.com"">Ingredients</a>
+            <a href=""C:\Users\user\Desktop\Tink\ai.html"">Recipes</a>
+            <a href="#about">About</a>
+        </div>
+    </div>
+
+    

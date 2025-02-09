@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nestease - Make It Easy</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+        </ul>
+    </nav>
+    
+    <div class="header">
+        <h1>Nestease</h1>
+        <p>Make it Easy</p>
+    </div>
+
+    <div class="container">
+        <!-- Household Product Section -->
+        <div class="section">
+            <h2>Add Household Products</h2>
+            <form id="productForm">
+                <input type="text" id="productName" placeholder="Product Name" required>
+                <input type="date" id="expiryDate" placeholder="Expiry Date",size = "60"required>
+                <input type="number" id="productQuantity" placeholder="Quantity" required>
+                <input type="file" id="productImage" accept="image/*",size='10px'required>
+                <button type="submit" name="add">Add Product </button>
+                
+            </form>
+            <h3>LIST</h3>
+            <ul id="productList"></ul>
+        </div>
+<div>
+   
+    <!-- Recipe Preferences Section -->
+    
+    <h2>Ingredients About to Expire</h2>
+    <ul id="expiringIngredientsList"></ul>
+
+   
+        <div class="section">
+            <ul id="expiringProducts"></ul>
+        </div>
+       
+
+        
+
+    <script> document.addEventListener('DOMContentLoaded', function () {
+        const productForm = document.getElementById('productForm');
+        const recipeForm = document.getElementById('recipeForm');
+        const productList = document.getElementById('productList');
+        const recipeList = document.getElementById('recipeList');
+        const expiringProducts = document.getElementById('expiringProducts');
+        const productDetails = [];
+    
+        // Function to check if the product is about to expire (within 7 days)
+        function isExpiring(expiryDate) {
+            const today = new Date();
+            const expDate = new Date(expiryDate);
+            const diffTime = expDate - today;
+            const diffDays = diffTime / (1000 * 3600 * 24);
+            return diffDays <= 7;
+        }
+    
+        // Add product to the list
+        productForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const productName = document.getElementById('productName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const productQuantity = document.getElementById('productQuantity').value;
+            const productImage = document.getElementById('productImage').files[0];
+            const reader = new FileReader();
+    
+            reader.onloadend = function () {
+                const product = {
+                    name: productName,
+                    expiry: expiryDate,
+                    quantity: productQuantity,
+                    image: reader.result
+                };
+    
+                productDetails.push(product);
+    
+                // Display the product in the list
+                const productItem = document.createElement('li');
+                const img = document.createElement('img');
+                img.src = product.image;
+                const productText = document.createElement('span');
+                productText.textContent = `${productName} - Expiry: ${expiryDate} - Quantity: ${productQuantity}`;
+                productItem.appendChild(img);
+                productItem.appendChild(productText);
+                productList.appendChild(productItem);
+    
+                // If the product is about to expire, display in the expiring list
+                if (isExpiring(expiryDate)) {
+                    const expiringItem = document.createElement('li');
+                    expiringItem.textContent = `${productName} is about to expire on ${expiryDate}`;
+                    expiringProducts.appendChild(expiringItem);
+                }
+    
+                // Clear the form fields
+                productForm.reset();
+            }
+    
+            if (productImage) {
+                reader.readAsDataURL(productImage);
+            }
+        });
+    
+        // Add recipe to the list
+        recipeForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const recipeDetailsText = document.getElementById('recipeDetails').value;
+    
+            const recipeItem = document.createElement('div');
+            recipeItem.innerHTML = `<p><strong>Recipe:</strong> ${recipeDetailsText}</p>`;
+            recipeList.appendChild(recipeItem);
+    
+            // Clear the form field
+            recipeForm.reset();
+        });
+    });
+    </script>
+</body>
+</html>
+<style>/* Global Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, #6a0dad, #000000); /* Violet to black gradient */
+        color: white; /* White text color */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100vh;
+    }
+    
+    h1 {
+        font-size: 3em;
+        margin-top: 20px;
+        color: #ffffff;
+    }
+    
+    h2 {
+        font-size: 1.8em;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+    
+    h3 {
+        font-size: 2em;
+        color: #ffffff;
+        margin-top: 30px;
+    }
+    
+    textarea {
+        width: 300px;
+        height: 150px;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-family: 'Arial', sans-serif;
+        resize: none;
+    }
+    
+    input {
+        width: 250px;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-family: 'Arial', sans-serif;
+    }
+
+    input[type="date"] { 
+        background: transparent;
+        color: rgba(255, 255, 255, 0.3);
+        width: 250px;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        font-family: 'Arial', sans-serif;
+    }
+    
+    /* Buttons with Violet Gradient */
+    button {
+        padding: 12px 25px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: linear-gradient(45deg, #9b59b6, #6a0dad); /* Violet gradient */
+        color: white;
+        font-family: 'Arial', sans-serif;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    button:hover {
+        background: linear-gradient(45deg, #6a0dad, #9b59b6); /* Violet gradient */
+        transform: translateY(-3px);
+    }
+    
+    button:active {
+        transform: translateY(1px);
+    }
+    
+    /* Expiring Ingredients Box */
+    #expiringIngredientsBox {
+        width: 80%;
+        background: linear-gradient(135deg, #9b59b6, #6a0dad); /* Gradient background */
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    #expiringIngredientsBox input[type="text"] {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    li {
+        font-size: 1.2em;
+        color: #ffffff;
+        margin-bottom: 8px;
+    }
+    
+    /* Section Styling */
+    div {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    #generatedRecipe {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #ffffff;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        width: 60%;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    /* Responsive design for smaller screens */
+    @media screen and (max-width: 768px) {
+        body {
+            padding: 20px;
+        }
+    
+        h1 {
+            font-size: 2.5em;
+        }
+    
+        h2 {
+            font-size: 1.5em;
+        }
+    
+        h3 {
+            font-size: 1.8em;
+        }
+    
+        textarea, input[type="text"] {
+            width: 100%;
+        }
+    
+        button {
+            width: 100%;
+        }
+    
+        #generatedRecipe {
+            width: 90%;
+        }
+        input-type-range{
+            width: 250px;
+        text-align:center;
+    }
+    .productImage {
+        height:30px;
+        width:10px;
+
+    }
+    /* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+
+
+     }
+    }
+</style>  

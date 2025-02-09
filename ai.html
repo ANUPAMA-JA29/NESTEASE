@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Generator</title>
+</head>
+<body>
+    <h1>AI Recipe Generator</h1>
+
+    <!-- Recipe Preferences Section -->
+    <div>
+        <h2>Enter Your Recipe Preferences</h2>
+        <textarea id="recipePreferences" placeholder="Enter your preferred recipes..."></textarea><br><br>
+        <button onclick="savePreferences()">Save Preferences</button>
+    </div>
+
+    <!-- Expiring Ingredients Section -->
+    <div>
+        <h2>Ingredients About to Expire</h2>
+        <input type="text" id="expiringIngredient" placeholder="Enter an expiring ingredient">
+        <button onclick="addExpiringIngredient()">Add Ingredient</button>
+        <ul id="expiringIngredientsList"></ul>
+    </div>
+
+    <!-- Recipe Generation Button -->
+    <div>
+        <button onclick="generateRecipe()">Generate Recipe</button>
+    </div>
+
+    <!-- Generated Recipe -->
+    <h3>Generated Recipe</h3>
+    <div id="generatedRecipe"></div>
+
+    <script>
+        let expiringIngredients = []; // List of ingredients about to expire
+        let recipePreferences = ''; // User's recipe preferences
+
+        // Save user recipe preferences
+        function savePreferences() {
+            recipePreferences = document.getElementById('recipePreferences').value;
+            alert('Your recipe preferences have been saved!');
+        }
+
+        // Add an expiring ingredient to the list
+        function addExpiringIngredient() {
+            const ingredient = document.getElementById('expiringIngredient').value;
+            if (ingredient) {
+                expiringIngredients.push(ingredient);
+                document.getElementById('expiringIngredient').value = ''; // Clear input field
+                updateExpiringIngredientsList();
+            } else {
+                alert('Please enter an ingredient.');
+            }
+        }
+
+        // Update the list of expiring ingredients
+        function updateExpiringIngredientsList() {
+            const list = document.getElementById('expiringIngredientsList');
+            list.innerHTML = ''; // Clear the current list
+
+            expiringIngredients.forEach(ingredient => {
+                const li = document.createElement('li');
+                li.textContent = ingredient;
+                list.appendChild(li);
+            });
+        }
+
+        // Generate recipe based on preferences and expiring ingredients
+        function generateRecipe() {
+            if (recipePreferences && expiringIngredients.length > 0) {
+                // Prepare the prompt for AI
+                const prompt = generatePrompt();
+
+                // Call the AI API (e.g., OpenAI)
+                callAIAPI(prompt);
+            } else {
+                alert('Please save your preferences and add ingredients to generate a recipe.');
+            }
+        }
+
+        // Create the prompt to send to AI
+        function generatePrompt() {
+            let prompt = `Create a recipe based on the following preferences: "${recipePreferences}". `;
+            prompt += "The ingredients that are about to expire are: " + expiringIngredients.join(", ") + ".\n";
+            prompt += "Generate a recipe using those ingredients.";
+
+            return prompt;
+        }
+
+        // Function to call OpenAI API or any other AI service
+        function callAIAPI(prompt) {
+            const apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with your OpenAI API key
+
+            fetch('https://api.openai.com/v1/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'text-davinci-003', // Or use another model based on your choice
+                    prompt: prompt,
+                    max_tokens: 150
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const recipe = data.choices[0].text.trim();
+                document.getElementById('generatedRecipe').textContent = recipe;
+            })
+            .catch(error => {
+                console.error('Error generating recipe:', error);
+                alert('There was an error generating the recipe.');
+            });
+        }
+    </script>
+</body>
+</html>
