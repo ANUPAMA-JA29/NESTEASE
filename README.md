@@ -48,7 +48,7 @@ How to Run the Project
 
 1. Clone the repository:
 
-git clone https://anupama-ja29.github.io/NESTEASE/
+https://anupama-ja29.github.io/NESTEASE/
 
 
 2. Install dependencies:
